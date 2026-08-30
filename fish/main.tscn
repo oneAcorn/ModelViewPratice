@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://cmn3fsh0a1q2"]
+
+[ext_resource type="Script" path="res://fish/scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://fish/scripts/orbit_camera.gd" id="2_orbit"]
+[ext_resource type="Script" path="res://fish/scripts/fish_viewer.gd" id="3_viewer"]
+[ext_resource type="PackedScene" uid="uid://b0fcq1ed8y5of" path="res://fish/fish.tscn" id="4_fish"]
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+sky_top_color = Color(0.24, 0.42, 0.63, 1)
+sky_horizon_color = Color(0.66, 0.77, 0.84, 1)
+ground_bottom_color = Color(0.45, 0.53, 0.62, 1)
+ground_horizon_color = Color(0.7, 0.78, 0.85, 1)
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env"]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 3
+ambient_light_sky_contribution = 1.0
+ambient_light_energy = 0.7
+tonemap_mode = 2
+
+[sub_resource type="PlaneMesh" id="floor_mesh"]
+size = Vector2(60, 60)
+
+[sub_resource type="StandardMaterial3D" id="floor_mat"]
+albedo_color = Color(0.7, 0.76, 0.82, 1)
+roughness = 1.0
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+light_energy = 1.3
+shadow_enabled = true
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("floor_mesh")
+surface_material_override/0 = SubResource("floor_mat")
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("2_orbit")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+current = true
+fov = 45.0
+near = 0.05
+
+[node name="FishViewer" type="Node3D" parent="."]
+script = ExtResource("3_viewer")
+camera_rig = NodePath("../CameraRig")
+
+[node name="Fish" parent="FishViewer" instance=ExtResource("4_fish")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="UIRoot" type="Control" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HintLabel" type="Label" parent="UI/UIRoot"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 16.0
+offset_bottom = 44.0
+grow_horizontal = 2
+horizontal_alignment = 1
+text = "拖动旋转 · 滚轮 / 双指缩放 · 点击鱼进行拆解"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.18, 0.85)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 16
+
+[node name="PartLabel" type="Label" parent="UI/UIRoot"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 50.0
+offset_bottom = 96.0
+grow_horizontal = 2
+horizontal_alignment = 1
+text = "鱼身"
+theme_override_colors/font_color = Color(1, 0.92, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.08, 0.02, 0.85)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 30
+
+[node name="BackButton" type="Button" parent="UI/UIRoot"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -72.0
+offset_top = -64.0
+offset_right = 72.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "返回整体"
