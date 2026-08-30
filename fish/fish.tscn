@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b0fcq1ed8y5of"]
+
+[ext_resource type="PackedScene" uid="uid://bp7g5suh7lhcu" path="res://assets/model/anvil.glb" id="1_wy1ge"]
+[ext_resource type="PackedScene" uid="uid://bmkeoes1g3nt3" path="res://assets/model/cartoon_fish_bone.glb" id="2_12uvg"]
+[ext_resource type="PackedScene" uid="uid://crj83qxc83lip" path="res://assets/model/log_01.glb" id="3_x746t"]
+
+[node name="Fish" type="Node3D" unique_id=1399857003]
+
+[node name="Head" parent="." unique_id=715916585 instance=ExtResource("1_wy1ge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.13065839, 0.5949471)
+
+[node name="Body" parent="." unique_id=1723669774 instance=ExtResource("2_12uvg")]
+transform = Transform3D(0.05503142, 0, 1.9992428, 0, 2, 0, -1.9992428, 0, 0.05503142, 0, 0, 0)
+
+[node name="Tail" parent="." unique_id=2072939798 instance=ExtResource("3_x746t")]
+transform = Transform3D(0.29999998, 0, 0, 0, 0.0053138137, 0.29995286, 0, -0.29995286, 0.0053138137, 0, 0, -0.39807323)
